@@ -8,7 +8,7 @@ module.exports =
       @error = null
 
     escapeQuotes: (content) ->
-      content.replace(/("|`)/g, (match, p1, offset, string)->
+      content.replace(/("|`|\$|\\)/g, (match, p1, offset, string)->
         return "\\" + p1
       )
 
