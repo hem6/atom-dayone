@@ -1,11 +1,9 @@
-DayoneView = require './dayone-view'
 exec = (require 'child_process').exec
 
 module.exports =
   class Journal
     constructor: (body) ->
       @body = @escapeQuotes(body)
-      @error = null
 
     escapeQuotes: (content) ->
       content.replace(/("|`|\$|\\)/g, (match, p1, offset, string)->
