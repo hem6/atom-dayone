@@ -1,29 +1,28 @@
-DayoneView = require './dayone-view'
 Journal = require './journal'
+{CompositeDisposable} = require 'atom'
 
 module.exports =
-  dayoneView: null
+  subscriptions: null
 
-  configDefaults:
-    dayonePath: "/usr/local/bin/dayone"
+  config:
+    dayonePath:
+      type: "string"
+      default: "/usr/local/bin/dayone"
 
   activate: (state) ->
-    @dayoneView = new DayoneView(state.dayoneViewState)
-    atom.workspaceView.command "dayone:create", => @create()
+    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
+    @subscriptions = new CompositeDisposable
 
-  deactivate: ->
-    @dayoneView.destroy()
-
-  serialize: ->
-    dayoneViewState: @dayoneView.serialize()
+    # Register command that toggles this view
+    @subscriptions.add atom.commands.add 'atom-workspace', "dayone:create": => @create()
 
   create: ->
-    editor = atom.workspace.getActiveEditor()
+    editor = atom.workspace.getActiveTextEditor()
     body = editor.getText()
 
     journal = new Journal(body)
     journal.save (error) =>
       if error
-        @dayoneView.error(error)
+        atom.notifications.addError("DayOne: Error", {detail: error})
       else
-        @dayoneView.success("Successfully created.")
+        atom.notifications.addSuccess("DayOne: Created")
