@@ -1,7 +1,7 @@
 {
   "name": "dayone",
   "main": "./lib/dayone",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Atom package to create new DayOne entry.",
   "activationEvents": [
     "dayone:create"
