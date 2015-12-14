@@ -16,6 +16,9 @@ module.exports =
     # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', "dayone:create": => @create()
 
+  deactivate: ->
+    @subscriptions.dispose()
+
   create: ->
     editor = atom.workspace.getActiveTextEditor()
     body = editor.getText()
